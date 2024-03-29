@@ -1,7 +1,7 @@
 {
   "name": "koishi-plugin-what-to-do",
   "description": "纯自定义的“今天做什么”插件",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "contributors": [
     "TTsdzb <ttsdzb@outlook.com>"
   ],
