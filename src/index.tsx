@@ -8,6 +8,7 @@ export interface Config {
     name: string;
     pic?: string;
   }[];
+  shortcut: string;
 }
 
 export const Config: Schema<Config> = Schema.object({
@@ -17,6 +18,9 @@ export const Config: Schema<Config> = Schema.object({
       pic: Schema.string(),
     })
   ).required(),
+  shortcut: Schema.string().default(
+    "^(今天|明天|后天|早晨|上午|下午|晚上)做什么$"
+  ),
 }).i18n({
   "zh-CN": require("./locales/zh-CN")._config,
 });
@@ -32,27 +36,32 @@ export function apply(ctx: Context, config: Config) {
         : ctx.root.config.nickname[0]
       : ctx.root.config.nickname
     : "Koishi";
+  const shortcut = new RegExp(config.shortcut);
 
-  ctx
-    .command("what-to-do [time:string]")
-    .action(({ session }, time) => {
-      if (config.list.length === 0) return <i18n path=".nothingToDo" />;
+  ctx.command("what-to-do [time:string]").action(({ session }, time) => {
+    if (config.list.length === 0) return <i18n path=".nothingToDo" />;
 
-      const choice = random.choice(config.list);
+    const choice = random.choice(config.list);
 
-      return (
-        <>
-          <quote id={session.messageId} />
-          <i18n path=".recommend">
-            <>{nickname}</>
-            <>{time ? time : ""}</>
-          </i18n>
-          <p>{choice.name}</p>
-          {choice.pic ? <img src={choice.pic} /> : ""}
-        </>
-      );
-    })
-    .shortcut(/^(今天|明天|后天|早晨|上午|下午|晚上)做什么$/i, {
-      args: ["$1"],
-    });
+    return (
+      <>
+        <quote id={session.messageId} />
+        <i18n path=".recommend">
+          <>{nickname}</>
+          <>{time ? time : ""}</>
+        </i18n>
+        <p>{choice.name}</p>
+        {choice.pic ? <img src={choice.pic} /> : ""}
+      </>
+    );
+  });
+
+  ctx.middleware((session, next) => {
+    const match = shortcut.exec(session.content);
+    if (match) {
+      session.execute(`what-to-do ${match[1] ? match[1] : ""}`);
+    } else {
+      next();
+    }
+  });
 }
