@@ -1,0 +1,14 @@
+commands:
+  what-to-do:
+    description: "不知道干什么？让我给你找点好玩的！"
+    messages:
+      nothingToDo: "没有什么可以做的事情。请联系 Bot 管理员添加！"
+      recommend: "{0}推荐你{1}做："
+
+_config:
+  botName: "机器人自身的名称。"
+  list:
+    $desc: "可以做的事件清单。插件会随机从这里抽取。"
+    $inner:
+      name: "事件的名称。"
+      pic: "事件缩略图的 URL。如果设置了这一项，插件会在发送名称的同时发送缩略图。如果图片存在本地，你需要在路径前加上 `file://`。"
