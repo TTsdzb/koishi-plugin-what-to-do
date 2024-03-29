@@ -4,7 +4,6 @@ import random from "random";
 export const name = "what-to-do";
 
 export interface Config {
-  botName: string;
   list: {
     name: string;
     pic?: string;
@@ -12,7 +11,6 @@ export interface Config {
 }
 
 export const Config: Schema<Config> = Schema.object({
-  botName: Schema.string().default("Koishi"),
   list: Schema.array(
     Schema.object({
       name: Schema.string().required(),
@@ -27,6 +25,14 @@ export function apply(ctx: Context, config: Config) {
   // Register i18n
   ctx.i18n.define("zh-CN", require("./locales/zh-CN"));
 
+  const nickname = ctx.root.config.nickname
+    ? ctx.root.config.nickname instanceof Array
+      ? ctx.root.config.nickname.length === 0
+        ? "Koishi"
+        : ctx.root.config.nickname[0]
+      : ctx.root.config.nickname
+    : "Koishi";
+
   ctx
     .command("what-to-do [time:string]")
     .action(({ session }, time) => {
@@ -38,7 +44,7 @@ export function apply(ctx: Context, config: Config) {
         <>
           <quote id={session.messageId} />
           <i18n path=".recommend">
-            <>{config.botName}</>
+            <>{nickname}</>
             <>{time ? time : ""}</>
           </i18n>
           <p>{choice.name}</p>
