@@ -18,7 +18,7 @@ export const Config: Schema<Config> = Schema.object({
     })
   ).required(),
   shortcut: Schema.string().default(
-    "^(今天|明天|后天|早晨|上午|下午|晚上)做什么$"
+    "^(今天|明天|后天|早晨|上午|中午|下午|晚上)[做干]什么$"
   ),
 }).i18n({
   "zh-CN": require("./locales/zh-CN")._config,
