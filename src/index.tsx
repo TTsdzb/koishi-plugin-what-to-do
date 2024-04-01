@@ -1,5 +1,4 @@
 import { Context, Schema } from "koishi";
-import random from "random";
 
 export const name = "what-to-do";
 
@@ -41,7 +40,7 @@ export function apply(ctx: Context, config: Config) {
   ctx.command("what-to-do [time:string]").action(({ session }, time) => {
     if (config.list.length === 0) return <i18n path=".nothingToDo" />;
 
-    const choice = random.choice(config.list);
+    const choice = config.list[Math.floor(Math.random() * config.list.length)];
 
     return (
       <>
