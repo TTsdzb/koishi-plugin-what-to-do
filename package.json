@@ -1,6 +1,6 @@
 {
   "name": "koishi-plugin-what-to-do",
-  "description": "纯自定义的“今天做什么”插件",
+  "description": "纯自定义的“今天做什么”插件。",
   "version": "0.0.5",
   "contributors": [
     "TTsdzb <ttsdzb@outlook.com>"
@@ -24,5 +24,13 @@
   ],
   "peerDependencies": {
     "koishi": "^4.17.2"
+  },
+  "koishi": {
+    "description": {
+      "zh": "纯自定义的“今天做什么”插件。"
+    },
+    "locales": [
+      "zh"
+    ]
   }
 }
